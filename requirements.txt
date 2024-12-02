@@ -8,6 +8,8 @@ pymongo
 imblearn
 PyYAML
 warnings
+plotly
+
 
 
 #-e. # -e means go and check packages and invoke command find_packages() under current directory(.)
