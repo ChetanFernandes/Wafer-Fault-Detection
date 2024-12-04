@@ -14,7 +14,9 @@ class Upload_data_DB:
     def upload_data(self):
         try:
             url =  "mongodb+srv://chetan1:chetan1@cluster0.2c8ti.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-            upload_data_db(url)
+            Message = upload_data_db(url)
+            return Message
+
         except Exception as e:
             raise Exception (e,sys)
     

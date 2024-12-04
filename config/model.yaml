@@ -1,54 +1,36 @@
 model_selection:
     model:
-      LR:
+      GBC:
         search_param_grid:
-          Cs: 
+          loss :
+           - log_loss
+           - exponential
+          learning_rate: 
+           - .5
+           - .10
+           - .20
+          n_estimators :
+           - 100
+           - 200
+          min_samples_split:
+           - 5
            - 10
            - 20
            - 30
-           - 5
-          penalty: 
-           - l1
-           - l2
-          solver:
-           - saga     
-      SVC:
-        search_param_grid:
-          C:
-           - 0.1
-           - 1
-           - 10
-          kernel:
-           - linear
-           - poly 
-           - rbf
-      LSVC:
-        search_param_grid:
-          penalty:
-           - l1
-           - l2
-          C: 
-           - 0.1
-           - 1
-           - 10
-      RFC:
-        search_param_grid:
-          n_estimators: 
-           - 100
-           - 200
-           - 300
-          max_depth: 
+          min_samples_leaf:
            - 5
            - 10
-          min_samples_split: 
-           - 2
-           - 5
-           - 10
-          min_samples_leaf: 
-           - 1
-           - 2
-           - 4
-     
-  
-          
+           - 18
+          max_depth:
+           - 8
+           - 15
+           - 20
+          max_features:
+           - sqrt
+           - log2
+          ccp_alpha:
+           - .8
+           - .15 
+
+    
         

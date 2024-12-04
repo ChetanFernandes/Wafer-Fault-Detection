@@ -8,6 +8,7 @@ import pickle
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+from sklearn.metrics import roc_curve, roc_auc_score
 import yaml
 
 
@@ -24,7 +25,7 @@ def upload_data_db(url):
             logging.info("CSV uploaded successfully")
             logging.info(f" DB created successfully. Existing DB's are - {client.list_database_names()}")
             all_documents = collection.find()
-            print("CSV uploaded successfully")
+            return "Data successfully uploaded to MongoDB"
 
         except Exception as e:
             raise Exception(e,sys)
@@ -39,23 +40,31 @@ def save_object(file_path, obj):
      except Exception as e:
           raise CustomException(e,sys)
      
-def model_training(X_train,X_test,y_train,y_test,models_short):
+def model_training(X_train,X_test,y_train,y_test,models):
      try:
           model_list = []
           report = []
           kf = KFold(n_splits = 5, shuffle=True, random_state=None) 
-          for i in range(len(models_short)):
-               model = (list(models_short.values())[i])
+          for i in range(len(models)):
+               model = (list(models.values())[i])
                scores = cross_val_score(model, X_train, y_train, cv = kf)
-               logging.info(f" Scores -> , {scores * 100}")
-               logging.info(f" Mean Score ->, {np.mean(scores)}")
+               logging.info(f" Scores ->, {scores * 100}")
+               logging.info(f" Mean Score, {np.mean(scores)}")
                model.fit(X_train,y_train)
                y_pred = model.predict(X_test)
+               logging.info(f" clasification report -> {classification_report(y_test,y_pred)}")
+               fpr, tpr, thresholds = roc_curve(y_test,y_pred)
+               auc_score = roc_auc_score(y_test,y_pred)
                model_score = accuracy_score(y_test,y_pred)
-               logging.info(f"Accuracy score of {model} is {model_score * 100}") 
-               logging.info("*"*35)
-               report.append(model_score*100)
-               model_list.append(list(models_short.keys())[i])
+
+               logging.info(f" fpr {fpr}, tpr {tpr}, threshold {thresholds}")
+               logging.info(f" AUC Score, {auc_score}")
+               logging.info(f" Model Score , {model_score}")
+               logging.info(f"Accuracy score of {model} is {auc_score * 100}")
+               logging.info(f"{'*'*35}")
+               
+               report.append(auc_score*100)
+               model_list.append(list(models.keys())[i])
           return report, model_list
        
      except Exception as e:
