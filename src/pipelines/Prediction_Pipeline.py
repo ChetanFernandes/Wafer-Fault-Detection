@@ -35,7 +35,7 @@ class prediction_pipe_line:
     
         except Exception as e:
             raise Exception(e,sys)
-    
+
         
     def cleaning_the_prediction_file(self,pred_file_path):
         try:
