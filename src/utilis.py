@@ -87,7 +87,20 @@ def read_yaml_file(filename: str) -> dict:
             
         except Exception as e:
             raise CustomException(e, sys)
-  
+        
+def model_load_object( filepath:str):
+       try:
+            
+            with open(filepath, "rb") as model:
+                return pickle.load(model)  
+              
+            
+       except Exception as e:
+            raise CustomException(e, sys)
+       
+
+       
+
         
 
      

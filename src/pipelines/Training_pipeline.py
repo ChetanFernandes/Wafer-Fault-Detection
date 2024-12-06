@@ -40,7 +40,7 @@ class Initiate_training_pipeline:
             #Creating instance of class for Data Transformation
             data_transformation = DataTransformation()
             #Calling functions of class using object of class
-            preprocessor_file_path, processor,x_df,y_df = data_transformation.get_data_transformation_obj(x_data_path,y_data_path)
+            preprocessor_file_path, processor,x_df,y_df= data_transformation.get_data_transformation_obj(x_data_path,y_data_path)
             print(preprocessor_file_path)
 
             # Calling function to split the data to train test and split

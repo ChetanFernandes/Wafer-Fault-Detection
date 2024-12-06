@@ -33,22 +33,17 @@ class DataTransformation:
             #Dropping "Unnamed" columns as its not necessary
             x_df.drop([x_df.columns[0]], axis = 1 , inplace = True)
             logging.info (f"Shape of x_df \n{x_df.shape} \n{x_df.head()}")
-
+            '''
             logging.info(f"Drop null values greater than 35-> {(x_df.isnull().mean())*100}")
-            cols = []
-            for col in x_df.columns:
-                if (x_df[col].isnull().sum()) > 35:
-                    x_df.drop([col], axis = 1 , inplace = True)
-                    cols.append(col)
+             cols = []
+               for col in x_df.columns:
+               if (x_df[col].isnull().sum()) > 35:
+               x_df.drop([col], axis = 1 , inplace = True)
+               cols.append(col)
+               return col
 
-            logging.info(f"Columns having null values greater than 35 droped-> {len(cols)} and shape of data frame {x_df.shape}")
-
-            logging.info(f"Filling the null values")
-            for col in x_df.columns:
-                        x_df[col] = x_df[col].fillna(x_df[col].median())
-
-            logging.info(f"Null values filled. Count of Null values -> {x_df.isna().sum().sum()}")     
-
+            logging.info(f"Columns having null values greater than 35 droped-> {len(col)} and shape of data frame {x_df.shape}")
+           
             logging.info(f" Dropping columns having SD = 0")
 
             columns_Zero_STD = []
@@ -56,24 +51,31 @@ class DataTransformation:
                 if x_df[col].std() == 0:
                     x_df.drop([col], axis = 1 , inplace = True)
                     columns_Zero_STD.append(col)
-
+           
             logging.info(f"Columns having SD = 0 dropped-> {len(columns_Zero_STD)} and shape of data frame {x_df.shape}")
-    
+
+            '''
+            logging.info(f"Filling the null values")
+            for col in x_df.columns:
+                        x_df[col] = x_df[col].fillna(x_df[col].median())
+
+            logging.info(f"Null values filled. Count of Null values -> {x_df.isna().sum().sum()}")     
+           
             logging.info(f" Create a pipeline")
 
+           
             pipeline = Pipeline(steps = [
                                  ('RobustScaler', RobustScaler())
                                             ])
-        
-            logging.info(f" Pipelline_obj-> \n{pipeline}")   
-
+           
             logging.info(f"Preparing pipeline using columns transformer")
-
-            preprocessor = ColumnTransformer([
-                                            ('num_pipeline',pipeline,x_df.columns)
-                                             ])
             
-            logging.info(f"Pipeline completed-> \n{preprocessor}")                            
+            preprocessor = ColumnTransformer([
+                                            ('num_pipeline', pipeline, x_df.columns)
+                                             ])
+           
+          
+            logging.info(f" Pipelline_obj-> \n{preprocessor}")                           
         
             save_object(
                          file_path=self.data_transformatiomn_config.pre_processor_obj_file_path,
@@ -127,6 +129,10 @@ class DataTransformation:
             logging.info(f" Scaling Initiated")
             X_train = pd.DataFrame(processor.fit_transform(X_train), columns = processor.get_feature_names_out())
             X_test = pd.DataFrame(processor.transform(X_test), columns = processor.get_feature_names_out())
+
+            preprocessor_path = self.data_transformatiomn_config.pre_processor_obj_file_path
+            os.makedirs(os.path.dirname(preprocessor_path), exist_ok= True)
+            save_object(file_path = preprocessor_path, obj= processor)
          
             logging.info(f" Scaling completed. Data post scaling -> \n{X_train.head()}, \n{X_test.head()}")
             logging.info(f"Shape of Data post scaling -> \n{X_train.shape, X_test.shape, y_train.shape, y_test.shape}")
