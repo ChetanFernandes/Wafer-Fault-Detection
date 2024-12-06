@@ -16,10 +16,10 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v
+      uses: actions/checkout@v3
       
     - name: Lint Code
-      uses: echo "Listing repository" 
+      uses: echo "Linting repository" 
 
     - name: Run unit test 
       uses: echo "Running unit tests" 
@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v
+      uses: actions/checkout@v3
       
     - name: Configure AWS credentials
       uses: aws-action/configure-aws-credentials@v1
