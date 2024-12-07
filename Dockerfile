@@ -8,6 +8,6 @@ COPY . /app
 RUN apt-get update && apt-get install -y build-essential libssl-dev libffi-dev python3-dev
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+#RUN pip install --no-cache-dir -r requirements.txt
 
 CMD ["python3", "app.py"]
