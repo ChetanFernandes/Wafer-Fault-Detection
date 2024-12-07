@@ -4,7 +4,7 @@ decorator==5.1.1
 dnspython==2.7.0
 exceptiongroup==1.2.2
 executing==2.1.0
-Flask==3.1.0
+flask==3.1.0
 fonttools==4.55.0
 imbalanced-learn==0.12.4
 imblearn==0.0
